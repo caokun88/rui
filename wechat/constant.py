@@ -34,4 +34,5 @@ API_URL_DICT = {
                             'appid={}&secret={}&code={}&grant_type=authorization_code',
     'web_user_info_url': 'https://api.weixin.qq.com/sns/userinfo?access_token={}&openid={}&lang=zh_CN ',
     'user_info_url': 'https://api.weixin.qq.com/cgi-bin/user/info?access_token={}&openid={}&lang=zh_CN',
+    'upload_multi_media_url': 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token={}&type={}',
 }

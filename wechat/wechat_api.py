@@ -224,3 +224,32 @@ def api_get_user_info(openid):
     except Exception as e:
         resp_dict = dict()
     return resp_dict
+
+
+def api_get_media_id(file_path=None, media_type='image'):
+    """
+    向微信服务器上传多媒体文件，返回可用的
+    :param file_path:
+    :param media_type:
+    :return:
+    """
+    url = API_URL_DICT['upload_multi_media_url']
+    access_token = __api_get_access_token()
+    if file_path is None:
+        file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = os.path.join(file_path, 'static/images/kf.png')
+    f = open(file_path, 'rb')
+    resp_str = requests.post(
+        url=url.format(access_token, media_type),
+        files={'image': f}
+    )
+    try:
+        resp_dict = resp_str.json()
+    except Exception as e:
+        resp_dict = dict()
+    return resp_dict
+
+
+if __name__ == '__main__':
+    resp_dict = api_get_media_id()
+    print resp_dict
