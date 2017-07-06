@@ -226,14 +226,14 @@ def api_get_user_info(openid):
     return resp_dict
 
 
-def api_get_media_id(file_path=None, media_type='image'):
+def api_get_temp_media_id(file_path=None, media_type='image'):
     """
-    向微信服务器上传多媒体文件，返回可用的
+    向微信服务器上传多媒体文件，返回可用的media_id（临时）
     :param file_path:
     :param media_type:
     :return:
     """
-    url = API_URL_DICT['upload_multi_media_url']
+    url = API_URL_DICT['upload_multi_media_temp_url']
     access_token = __api_get_access_token()
     if file_path is None:
         file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -250,6 +250,30 @@ def api_get_media_id(file_path=None, media_type='image'):
     return resp_dict
 
 
+def api_get_permanent_media_id(file_path=None, media_type='image'):
+    """
+    向微信服务器上传多媒体文件，返回可用的media_id（永久）
+    :param file_path:
+    :param media_type:
+    :return:
+    """
+    url = API_URL_DICT['upload_multi_media_permanent_url']
+    access_token = __api_get_access_token()
+    if file_path is None:
+        file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        file_path = os.path.join(file_path, 'static/images/xfz.png')
+    f = open(file_path, 'rb')
+    resp_str = requests.post(
+        url=url.format(access_token, media_type),
+        files={'media': ('xfz.png', f, 'image/png')}
+    )
+    try:
+        resp_dict = resp_str.json()
+    except Exception as e:
+        resp_dict = dict()
+    return resp_dict
+
+
 if __name__ == '__main__':
-    resp_dict = api_get_media_id()
+    resp_dict = api_get_permanent_media_id()
     print resp_dict
