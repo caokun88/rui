@@ -7,7 +7,7 @@ import os
 import redis
 import requests
 
-from constant import PAY_DICT, DICT, API_URL_DICT, TIMEOUT_ACCESS_token, ACCESS_TOKEN_KEY
+from constant import PAY_DICT, DICT, API_URL_DICT, TIMEOUT_ACCESS_TOKEN, ACCESS_TOKEN_KEY
 from common import get_xml_from_dict, generate_nonce_str
 
 
@@ -109,7 +109,8 @@ def __api_get_access_token():
         resp_dict = dict()
     if resp_dict:
         access_token = resp_dict['access_token']
-        redis_conn.setex(ACCESS_TOKEN_KEY, TIMEOUT_ACCESS_token, access_token)
+        redis_conn.setex(ACCESS_TOKEN_KEY, TIMEOUT_ACCESS_TOKEN, access_token)
+        return access_token
     else:
         return None
 

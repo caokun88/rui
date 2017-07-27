@@ -2,7 +2,7 @@
 # coding=utf8
 
 ACCESS_TOKEN_KEY = 'common_access_token'
-TIMEOUT_ACCESS_token = 7000
+TIMEOUT_ACCESS_TOKEN = 7000
 
 WECHAT_TOKEN = ''
 
