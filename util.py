@@ -63,3 +63,4 @@ if __name__ == '__main__':
     print demo_dict
     xml_str = dict_to_xml(demo_dict)
     print xml_str
+    print zip(range(10), range(11), range(12), range(-16, 23))
