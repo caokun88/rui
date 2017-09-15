@@ -3,8 +3,18 @@
 
 
 import json
-import xmltodict
+import smtplib
+from email.header import Header
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
+import xmltodict
+import requests
+
+
+EMAIL_HOST = ''
+EMAIL_USER = ""
+EMAIL_PASS = ""
 
 XML_STR = """
 <student> 
@@ -56,6 +66,45 @@ def dict_to_xml(info_dict):
         print e
         xml_str = ''
     return xml_str
+
+
+def send_mail(mail_to, subject='', content='', html_content='', file_paths=None, http_links=None):
+    try:
+        me = ("%s<" + EMAIL_USER + ">") % Header(u"测试", "utf-8")
+        msg = MIMEMultipart()
+        msg['Subject'] = subject
+        msg['From'] = me
+        msg['To'] = ','.join(mail_to)
+
+        if content:
+            msg.attach(MIMEText(content, 'plain', 'utf8'))
+        if html_content:
+            msg.attach((MIMEText(html_content, 'html', 'utf8')))
+
+        if file_paths:
+            for f in file_paths:
+                f_name = f.split(r'/')[-1] if f.split(r'/') else f
+                attach = MIMEText(open(f, 'rb').read(), 'base64', 'utf8')
+                attach['Content-Type'] = 'application/octet-stream'
+                attach.add_header('Content-Disposition', 'attachment', filename='{}'.format(f_name.encode('utf8')))
+                msg.attach(attach)
+
+        if http_links:
+            for l in http_links:
+                f_name = l.split('filename=')[-1] if l.split('filename') else ''
+                attach = MIMEText(requests.get(l).content, 'base64', 'utf8')
+                attach['Content-Type'] = 'application/octet-stream'
+                attach.add_header('Content-Disposition', 'attachment', filename='{}'.format(f_name.encode('utf8')))
+
+        server = smtplib.SMTP()
+        server.connect(EMAIL_HOST)
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.sendmail(me, mail_to, msg=msg.as_string())
+        server.quit()
+    except Exception as e:
+        print e
+        return False
+    return True
 
 
 if __name__ == '__main__':
