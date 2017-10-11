@@ -277,4 +277,5 @@ def api_get_permanent_media_id(file_path=None, media_type='image'):
 
 if __name__ == '__main__':
     resp_dict = api_get_permanent_media_id()
+    
     print resp_dict
