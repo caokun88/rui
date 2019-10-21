@@ -14,7 +14,7 @@ idna==2.5
 jieba==0.38
 kombu==3.0.37
 matplotlib==2.0.2
-nltk==3.2.4
+nltk==3.4.5
 numpy==1.13.0
 olefile==0.44
 pandas==0.20.2
